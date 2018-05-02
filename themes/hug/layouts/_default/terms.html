@@ -1,0 +1,16 @@
+{{ define "main" }}
+  {{ $data := .Data }}
+  <div class="container" role="main">
+    <article class="post-preview">
+      <div class="book-toc col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+      {{ range $key, $value := .Data.Terms.ByCount }}
+        <div class="line">
+          <div class="cell title"><a href="{{ $.Site.LanguagePrefix | absURL }}/{{ $data.Plural }}/{{ $value.Name | urlize }}/">
+              # {{ $value.Name }}</a></div>
+          <div class="cell count"><span class="badge">{{ $value.Count }}</span></div>
+        </div>
+      {{ end }}
+      </div>
+    </article>
+  </div>
+{{ end }}
