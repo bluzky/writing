@@ -3,7 +3,7 @@
   <div class="intro-header no-img">
     <div class="container">
       <div class="row">
-        <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+        <div class="col-md-12">
           <div class="page-heading">
             <h1>{{ if .Data.Singular }}#{{ end }}{{ .Title }}</h1>
             <hr class="small">
@@ -13,34 +13,34 @@
     </div>
   </div>
 </header>
-{{ end }} {{ define "main" }}
+{{ end }}
+
+{{ define "main" }}
 <div class="container" role="main">
   <div class="row">
-    <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+    <div class="col-md-12">
       {{ with .Content }}
       <div class="well">
         {{.}}
       </div>
       {{ end }}
+
+
       <div class="posts-list">
-          adsfasdfasdfdasf
-        {{ range .Paginator.Pages }}
-        <article class="post-preview">
-          <a href="{{ .Permalink }}">
-            <h2 class="post-title">{{ .Title }}</h2>
-          </a>
-
-          <span class="post-meta">
-            {{ default (i18n "dateFormat") .Site.Params.dateformat | .Date.Format | i18n "postedOnDate" }}
-          </span> {{ if .Params.tags }}
-          <span class="post-meta">
-                  {{ range .Params.tags }}
-                    #<a href="{{ $.Site.LanguagePrefix | absURL }}tags/{{ . | urlize }}/">{{ . }}</a>&nbsp;
-                  {{ end }}
-          </span> {{ end }}
-
+        <article class="post-preview ">
+          <div class="book-toc col-md-12">
+            {{ range .Paginator.Pages }}
+            <div class="line">
+              <div class="cell title"><a href="{{ .Permalink }}">
+                  {{ .Title }}</a>
+                </div>
+              <div class="cell" style="width: 130px; font-style: italic; text-align: right;">
+                  {{ .Date.Format "Jan 2, 2006" }}
+              </div>
+            </div>
+            {{ end }}
+          </div>
         </article>
-        {{ end }}
       </div>
       {{ if or (.Paginator.HasPrev) (.Paginator.HasNext) }}
       <ul class="pager main-pager">

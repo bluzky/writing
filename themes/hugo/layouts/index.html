@@ -14,7 +14,8 @@
         {{ $pag := .Paginate (where .Data.Pages "Type" "post") }} {{ range $pag.Pages }}
         <div class="line">
           <div class="cell title"><a href="{{ .Permalink }}">
-              {{ .Title }}</a></div>
+              {{ .Title }}</a>
+            </div>
           <div class="cell" style="width: 130px; font-style: italic; text-align: right;">
               {{ .Date.Format "Jan 2, 2006" }}
           </div>
