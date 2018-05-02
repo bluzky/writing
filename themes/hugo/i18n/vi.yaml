@@ -1,0 +1,64 @@
+# Content
+- id: dateFormat
+  translation: "January 2, 2006"
+- id: shortdateFormat
+  translation: "Jan 2, 2006 15:04:05"
+- id: postedOnDate
+  translation: "Đăng ngày {{ .Count }}"
+- id: lastModified
+  translation: "(Cập nhật lúc {{ .Count }})"
+- id: translationsLabel
+  translation: "Ngôn ngữ khác: "
+- id: translationsSeparator
+  translation: ", "
+- id: readMore
+  translation: "Xem thêm"
+- id: olderPosts
+  translation: "Bài viết cũ hơn"
+- id: newerPosts
+  translation: "Bài viết mới hơn"
+- id: previousPost
+  translation: "Bài viết trước"
+- id: nextPost
+  translation: "Bài viết kế tiếp"
+- id: readTime
+  translation: "phút"
+- id: words
+  translation: "từ"
+
+
+# 404 page
+- id: pageNotFound
+  translation: "Whoops, trang này không tồn tại. (Lỗi 404)"
+
+# Footer
+- id: poweredBy # Accepts HTML
+  translation: '<a href="http://gohugo.io">Hugo v{{ .Hugo.Version }}</a> powered &nbsp;&bull;&nbsp; Theme by <a href="http://deanattali.com/beautiful-jekyll/">Beautiful Jekyll</a> adapted to <a href="https://github.com/halogenica/beautifulhugo">Beautiful Hugo</a>'
+
+# Navigation
+- id: toggleNavigation
+  translation: "Thanh điều hướng"
+- id: languageSwitcherLabel
+  translation: "Ngôn ngữ"
+- id: gcseLabelShort
+  translation: "Tìm kiếm"
+- id: gcseLabelLong
+  translation: "Tìm {{ .Site.Title }}"
+- id: gcseClose
+  translation: "Đóng"
+
+# Staticman
+- id: noComment
+  translation: "Chưa có bình luận nào"
+- id: oneComment
+  translation: "bình luận"
+- id: moreComment
+  translation: "bình luận"
+- id: useMarkdown
+  translation: "Bạn có thể sử dụng cú pháp Markdown"
+- id: yourName
+  translation: "Tên của bạn"
+- id: yourEmail
+  translation: "Địa chỉ email"
+- id: yourWebsite
+  translation: "Website"

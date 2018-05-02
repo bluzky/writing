@@ -1,0 +1,61 @@
+{{ define "header" }}
+<header class="header-section ">
+  <div class="intro-header no-img">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="page-heading">
+            <h1>{{ if .Data.Singular }}#{{ end }}{{ .Title }}</h1>
+            <hr class="small">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+{{ end }}
+
+{{ define "main" }}
+<div class="container" role="main">
+  <div class="row">
+    <div class="col-md-12">
+      {{ with .Content }}
+      <div class="well">
+        {{.}}
+      </div>
+      {{ end }}
+
+
+      <div class="posts-list">
+        <article class="post-preview ">
+          <div class="book-toc col-md-12">
+            {{ range .Paginator.Pages }}
+            <div class="line">
+              <div class="cell title"><a href="{{ .Permalink }}">
+                  {{ .Title }}</a>
+                </div>
+              <div class="cell" style="width: 130px; font-style: italic; text-align: right;">
+                  {{ .Date.Format "Jan 2, 2006" }}
+              </div>
+            </div>
+            {{ end }}
+          </div>
+        </article>
+      </div>
+      {{ if or (.Paginator.HasPrev) (.Paginator.HasNext) }}
+      <ul class="pager main-pager">
+        {{ if .Paginator.HasPrev }}
+        <li class="previous">
+          <a href="{{ .URL }}page/{{ .Paginator.Prev.PageNumber }}/">&larr; {{ i18n "newerPosts" }}</a>
+        </li>
+        {{ end }} {{ if .Paginator.HasNext }}
+        <li class="next">
+          <a href="{{ .URL }}page/{{ .Paginator.Next.PageNumber }}/">{{ i18n "olderPosts" }} &rarr;</a>
+        </li>
+        {{ end }}
+      </ul>
+      {{ end }}
+    </div>
+  </div>
+</div>
+{{ end }}

@@ -1,0 +1,56 @@
+{{ define "main" }}
+<div role="main" class="container">
+  <div class="row">
+    <div class="col-md-12">
+      {{ with .Content }}
+      <div class="">
+        {{.}}
+      </div>
+      {{ end }}
+
+      <div class="posts-list">
+        <article class="post-preview ">
+      <div class="book-toc col-md-12">
+        {{ $pag := .Paginate (where .Data.Pages "Type" "post") }} {{ range $pag.Pages }}
+        <div class="line">
+          <div class="cell title"><a href="{{ .Permalink }}">
+              {{ .Title }}</a>
+            </div>
+          <div class="cell" style="width: 130px; font-style: italic; text-align: right;">
+              {{ .Date.Format "Jan 2, 2006" }}
+          </div>
+        </div>
+        <!-- <div class="line">
+          <div class="cell">
+            {{ if .Params.tags }}
+            <span class="post-meta" style="margin-left: 20px;">
+              in
+                 {{ range .Params.tags }}
+                   #<a href="{{ $.Site.LanguagePrefix | absURL }}/tags/{{ . | urlize }}/">{{ . }}</a>&nbsp;
+                 {{ end }}
+           </span>
+           {{ end }}
+          </div>
+        </div> -->
+        {{ end }}
+      </div>
+    </article>
+      </div>
+
+      {{ if or (.Paginator.HasPrev) (.Paginator.HasNext) }}
+      <ul class="pager main-pager">
+        {{ if .Paginator.HasPrev }}
+        <li class="previous">
+          <a href="{{ .URL }}page/{{ .Paginator.Prev.PageNumber }}/">&larr; {{ i18n "newerPosts" }}</a>
+        </li>
+        {{ end }} {{ if .Paginator.HasNext }}
+        <li class="next">
+          <a href="{{ .URL }}page/{{ .Paginator.Next.PageNumber }}/">{{ i18n "olderPosts" }} &rarr;</a>
+        </li>
+        {{ end }}
+      </ul>
+      {{ end }}
+    </div>
+  </div>
+</div>
+{{ end }}
