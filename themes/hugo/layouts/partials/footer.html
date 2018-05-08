@@ -27,13 +27,13 @@
           </li>
           {{ end }}
         </ul>
-        <p class="credits copyright text-muted">
+        <p class="credits copyright ">
           {{ if .Site.Author.name }} {{ if .Site.Author.website }}
           <a href="{{ .Site.Author.website }}">{{ .Site.Author.name }}</a> {{ else }} {{ .Site.Author.name }} {{ end }} {{ end }} &nbsp;&bull;&nbsp; {{ .Site.LastChange.Format "2006" }} {{ if .Site.Title }} &nbsp;&bull;&nbsp;
           <a href="{{ " " | absLangURL }}">{{ .Site.Title }}</a> {{ end }}
         </p>
         <!-- Please don't remove this, keep my open source work credited :) -->
-        <p class="credits theme-by text-muted">
+        <p class="credits theme-by ">
           {{ i18n "poweredBy" . | safeHTML }} {{ with .Site.Params.commit }}&nbsp;&bull;&nbsp;[<a href="{{.}}{{ getenv " GIT_COMMIT_SHA " }}">{{ getenv "GIT_COMMIT_SHA_SHORT" }}</a>]{{ end }}
         </p>
       </div>
