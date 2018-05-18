@@ -135,31 +135,28 @@ Có vào thì phải có lấy ra chứ nhỉ, bây giờ ta sẽ thêm code đ�
 
 ```elixir
   def get(key) do
-    GenServer.call(__MODULE__, {:get, key})
-  end
-  
-  def handle_call({:get, key}, _from, state) do
-  	# lấy giá trị đầu tiên tìm đuợc
+	# lấy giá trị đầu tiên tìm đuợc
     rs = Ets.lookup(:simple_cache, key) |> List.first()
-	
-	# Nếu không tìm thấy thì trả về lỗi
+
+		# Nếu không tìm thấy thì trả về lỗi
     if rs == nil do
-      {:reply, {:error, :not_found}, state}
+      {:error, :not_found}
     else
       expired_at = elem(rs, 2)
-
-	  # So sánh thời điểm hết hạn với hiện tại, nếu hết hạn thì trả về lỗi
+			
+			# So sánh thời điểm hết hạn với hiện tại, nếu hết hạn thì trả về lỗi
       cond do
         NaiveDateTime.diff(NaiveDateTime.utc_now(), expired_at) > 0 ->
-          {:reply, {:error, :expired}, state}
+          {:error, :expired}
 
         true ->
-          # do data nằm ở vị trí thứ 2 trong tuple nên dùng elem(rs, 1)
-          {:reply, {:ok, elem(rs, 1)}, state}
+          {:ok, elem(rs, 1)}
       end
     end
   end
 ```
+
+**Note**: Nhờ feedback của bác @HQC, chỗ này mình đọc trực tiếp từ table, thay vì dùng `GenServer.call` như trước vì khi send request vào GenServer thì code sẽ được chạy `sync`/đồng bộ. Do vậy sẽ tạo nên ngẽn cổ chai. Mình sửa lại ở phần tạo table thêm `read_concurrency: true` và đưa phần code query dữ liệu ra ngoài GenServer
 
 
 
@@ -204,7 +201,21 @@ defmodule PhoenixCache.Bucket do
   end
 
   def get(key) do
-    GenServer.call(__MODULE__, {:get, key})
+    rs = Ets.lookup(:simple_cache, key) |> List.first()
+
+    if rs == nil do
+      {:error, :not_found}
+    else
+      expired_at = elem(rs, 2)
+
+      cond do
+        NaiveDateTime.diff(NaiveDateTime.utc_now(), expired_at) > 0 ->
+          {:error, :expired}
+
+        true ->
+          {:ok, elem(rs, 1)}
+      end
+    end
   end
 
   def delete(key) do
@@ -216,26 +227,8 @@ defmodule PhoenixCache.Bucket do
 
   @impl true
   def init(state) do
-    Ets.new(:simple_cache, [:set, :protected, :named_table])
+    Ets.new(:simple_cache, [:set, :protected, :named_table, read_concurrency: true])
     {:ok, state}
-  end
-
-  def handle_call({:get, key}, _from, state) do
-    rs = Ets.lookup(:simple_cache, key) |> List.first()
-
-    if rs == nil do
-      {:reply, {:error, :not_found}, state}
-    else
-      expired_at = elem(rs, 2)
-
-      cond do
-        NaiveDateTime.diff(NaiveDateTime.utc_now(), expired_at) > 0 ->
-          {:reply, {:error, :expired}, state}
-
-        true ->
-          {:reply, {:ok, elem(rs, 1)}, state}
-      end
-    end
   end
 
   @doc """
@@ -270,18 +263,6 @@ defmodule PhoenixCache.Bucket do
 end
 
 ```
-
-
-
-#### 2.8 Giải thích thêm
-
-Nếu bạn để ý sẽ thấy với `set` và `delete` đuợc xử lý trong `handle_cast`, còn `get` được xử lý trong `handle_call`. Tại sao lại có sự khác nhau này? Để hiểu hơn thì cần phải biết về cách `GenServer` xử lý message:
-
-- `handle_call` là đồng bộ `sync`  nghĩa là sau khi gọi `GenServer.call` thì process sẽ đợi đến khi nhận được kết quả mới thực hiện tiếp.
-- `handle_cash` là bất đồng bộ `async` là sau khi gọi `GenServer.cast` thì process sẽ tiếp tục thực thi mà không quan tâm kết quả trả về.
-
-Đối với `set` và `delete` ít khi ta quan tâm đến kết quả trả về nên coi như khỏi cần quan tâm, tui dùng `handle_cast`. Còn `get` thì hiển nhiên là cần phải biết là có dữ liệu hay không nên dùng `handle_call`
-
 
 
 ### 3. Setup cache
@@ -347,7 +328,7 @@ HIT
 
 Lần request đầu tiên, bài viết chưa được cache nên phải truy xuất database và cache lại, lần thứ 2 thì đã có trong cache nên không cần phải đọc từ database nữa.
 
-Ở ví dụ này có thể bạn sẽ chưa thấy sự khác biệt lắm về tốc độ respone, nhưng nếu như thay vì load 1 bài viết bằng việc xử lý thống kê dữ liệu thì sự khác biệt sẽ rất lớn.
+Ở ví dụ này có thể bạn sẽ chưa thấy sự khác biệt lắm về tốc độ response, nhưng nếu như thay vì load 1 bài viết bằng việc xử lý thống kê dữ liệu thì sự khác biệt sẽ rất lớn.
 
 
 
