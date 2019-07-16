@@ -62,7 +62,7 @@ end
 
 ```elixir
 def init(state) do
-    Ets.new(:simple_cache, [:set, :protected, :named_table])
+    Ets.new(:simple_cache, [:set, :protected, :named_table, read_concurrency: true])
     {:ok, state}
 end
 ```
