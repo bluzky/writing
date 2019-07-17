@@ -2,12 +2,49 @@ $black: #303030;
 $gray: #686868;
 $light-gray: #e5e5e5;
 $white: #fbfbfb;
-$serif: '"Source Code Pro"';
-$monospace: '"Source Code Pro"';
+$serif: 'Source Code Pro';
+$monospace: 'Source Code Pro';
 $fs: 1rem;
 $fs-large: 1.125rem;
 $std-margin: 0 0 1rem;
 $break-small: 800px;
+
+
+// colors
+$gray-100: #f8f9fa;
+$gray-200: #e9ecef;
+$gray-300: #dee2e6;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: #868e96;
+$gray-700: #495057;
+$gray-800: #343a40;
+$gray-900: #212529;
+
+
+$blue: #467fcf;
+$azure: #45aaf2;
+$indigo: #6574cd;
+$purple: #a55eea;
+$pink: #f66d9b;
+$red: #cd201f;
+$orange: #fd9644;
+$yellow: #f1c40f;
+$lime: #7bd235;
+$green: #5eba00;
+$teal: #2bcbba;
+$cyan: #17a2b8;
+
+
+$primary: $orange;
+$secondary: $gray-600;
+$success: $green;
+$info: $azure;
+$warning: $yellow;
+$danger: $red;
+$light: $gray-100;
+$dark: $gray-800;
+
 
 *,
 *::before,
@@ -97,7 +134,6 @@ blockquote {
 }
 
 a {
-  border-bottom: 1px solid currentColor;
   color: currentColor;
   text-decoration: none;
 
@@ -199,12 +235,27 @@ h6 {
   }
 }
 
+.text-blue{
+  color: $blue;
+}
+
+.text-orange{
+  color: $orange;
+}
+
 .site-header,
 .site-nav {
   margin-bottom: 2rem;
 
   h1 {
     margin-bottom: .5rem;
+    text-align: center;
+  }
+}
+
+.site-header{
+  h1{
+    font-size: 2.5rem;
   }
 }
 
@@ -244,13 +295,19 @@ h6 {
 
   time {
     display: block;
-
+    color: $primary;
+    
     @media screen and (min-width: $break-small) {
       flex: 0 0 5rem;
     }
 
     + a {
       margin-left: 1rem;
+      
+      &:hover{
+        text-decoration: underline;
+        color: $primary;
+      }
 
       @media screen and (min-width: $break-small) {
         margin-left: 2rem;
